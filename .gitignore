@@ -1,0 +1,8 @@
+﻿/BackEnd/obj/
+/BackEnd/bin/
+/BackEnd/Properties/
+/BackEnd/.env/
+/BackEndTests/obj/
+/BackEndTests/bin/
+/TestResults/
+
