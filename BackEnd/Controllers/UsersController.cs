@@ -26,11 +26,13 @@ namespace BackEnd.Controllers
 
         private static UserDTO UserToDto(User user)
         {
-            var userDto = new UserDTO();
-            userDto.Id = user.Id;
-            userDto.Name = user.Name;
-            userDto.Email = user.Email;
-            userDto.Password = user.Password;
+            var userDto = new UserDTO
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                Password = user.Password
+            };
             return userDto;
         }
         [HttpGet]
