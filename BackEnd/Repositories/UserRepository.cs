@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BackEnd.Data;
@@ -23,7 +24,7 @@ namespace BackEnd.Repositories
 
         public async Task<User> GetUserByIdAsync(long id)
         {
-            return await _userContext.User.FindAsync(id);
+            return await _userContext.User.FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<User> GetUserByNameAsync(string name)
@@ -33,6 +34,10 @@ namespace BackEnd.Repositories
 
         public async Task PostUserAsync(User user)
         {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
             await _userContext.User.AddAsync(user);
             await _userContext.SaveChangesAsync();
         }
