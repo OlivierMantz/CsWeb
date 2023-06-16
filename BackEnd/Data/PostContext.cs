@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BackEnd.Models;
+using Microsoft.EntityFrameworkCore;
 using BackEnd.Models.DTOs;
 
-namespace BackEnd.Models.Context
+namespace BackEnd.Data
 {
     public class PostContext : DbContext
     {
