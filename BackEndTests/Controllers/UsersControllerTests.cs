@@ -1,9 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BackEnd.Controllers;
+using BackEnd.Data;
 using BackEnd.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using BackEnd.Repositories;
 using BackEnd.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackEndTests.Controllers
 {
@@ -11,11 +13,18 @@ namespace BackEndTests.Controllers
     public class UsersControllerTests
     {
         private readonly UserService _userService;
-
+        private readonly UserContext _userContext;
         public UsersControllerTests()
         {
-            _userService = new UserService(new UserRepository());
-        }
+            var options = new DbContextOptionsBuilder<UserContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
+
+            var userContext = new UserContext(options);
+            userContext.Database.EnsureDeleted();
+            userContext.Database.EnsureCreated();
+
+            _userService = new UserService(new UserRepository(userContext));        }
 
         // GET
         [TestMethod()]

@@ -1,71 +1,65 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BackEnd.Data;
 using BackEnd.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackEnd.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly List<User> _users;
+        private readonly UserContext _userContext;
 
-        public UserRepository()
+        public UserRepository(UserContext userContext)
         {
-            _users = new List<User>
-            {
-                new User { Id = 1, Name = "John", Email = "John@gmail.com", Password = "1234", Role = "User", IsBanned = false },
-                new User { Id = 2, Name = "Jane", Email = "Jane@gmail.com", Password = "1234", Role = "User", IsBanned = false },
-                new User { Id = 3, Name = "Bob", Email = "Bob@gmail.com", Password = "1234", Role = "User", IsBanned = false }
-            };
+            _userContext = userContext;
         }
 
         public async Task<List<User>> GetUsersAsync()
         {
-            return await Task.FromResult(_users);
+            return await _userContext.User.ToListAsync();
         }
 
         public async Task<User> GetUserByIdAsync(long id)
         {
-            return await Task.FromResult(_users.FirstOrDefault(user => user.Id == id));
+            return await _userContext.User.FindAsync(id);
         }
+
         public async Task<User> GetUserByNameAsync(string name)
         {
-            return await Task.FromResult(_users.FirstOrDefault(user => user.Name == name));
+            return await _userContext.User.FirstOrDefaultAsync(user => user.Name == name);
         }
 
         public async Task PostUserAsync(User user)
         {
-            _users.Add(user);
-            await Task.CompletedTask;
+            await _userContext.User.AddAsync(user);
+            await _userContext.SaveChangesAsync();
         }
+
         public async Task<bool> PutUserAsync(User user)
         {
-            var existingUser = _users.FirstOrDefault(u => u.Id == user.Id);
-            if (existingUser == null)
-                return false;
-
-            existingUser.Name = user.Name;
-            existingUser.Email = user.Email;
-            existingUser.Password = user.Password;
-            existingUser.Role = user.Role;
-            existingUser.IsBanned = user.IsBanned;
-
-            return true;
+            _userContext.User.Update(user);
+            var updated = await _userContext.SaveChangesAsync();
+            return updated > 0;
         }
+
         public async Task<bool> DeleteUserAsync(long id)
         {
-            var user = _users.FirstOrDefault(u => u.Id == id);
+            var user = await _userContext.User.FindAsync(id);
             if (user != null)
             {
-                _users.Remove(user);
-                return await Task.FromResult(true);
+                _userContext.User.Remove(user);
+                var deleted = await _userContext.SaveChangesAsync();
+                return deleted > 0;
             }
-            return await Task.FromResult(false);
+
+            return false;
         }
-        
+
         public async Task<bool> UserExistsAsync(long userId)
         {
-            return _users.Any(u => u.Id == userId);
+            return await _userContext.User.AnyAsync(u => u.Id == userId);
         }
     }
 }
