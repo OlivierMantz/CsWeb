@@ -21,10 +21,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include=".github\workflows\Docker_Deployment.yaml" />
-  </ItemGroup>
-
   <!--<ItemGroup>-->
     <!--<Protobuf Include="Protos\platforms.proto" GrpcServices="Server" />
   </ItemGroup>-->
