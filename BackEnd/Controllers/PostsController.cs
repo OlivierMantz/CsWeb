@@ -24,10 +24,9 @@ namespace BackEnd.Controllers
             _context = context;
             _userService = userService;
     }
-    private static bool CheckInputInvalid(PostDTO postDTO) => postDTO == null || string.IsNullOrWhiteSpace(postDTO.Title) ||
-            string.IsNullOrWhiteSpace(postDTO.Description) ||
-            postDTO.AuthorId == null ||
-            string.IsNullOrWhiteSpace(postDTO.IsAvailable);
+        private static bool CheckInputInvalid(PostDTO postDTO) => postDTO == null || string.IsNullOrWhiteSpace(postDTO.Title) ||
+                string.IsNullOrWhiteSpace(postDTO.Description) ||
+                postDTO.AuthorId == null;
 
         private static PostDTO PostToDTO(Post post) =>
            new()
@@ -35,8 +34,7 @@ namespace BackEnd.Controllers
                Id = post.Id,
                Title = post.Title,
                Description = post.Description,
-               AuthorId = post.AuthorId,
-               IsAvailable = post.IsAvailable,
+               AuthorId = post.AuthorId
            };
         // GET: api/Posts
         [HttpGet]
@@ -119,8 +117,7 @@ namespace BackEnd.Controllers
             {
                 Title = postDTO.Title,
                 Description = postDTO.Description,
-                AuthorId = postDTO.AuthorId,
-                IsAvailable = postDTO.IsAvailable,
+                AuthorId = postDTO.AuthorId
             };
             _context.Post.Add(post);
             await _context.SaveChangesAsync();

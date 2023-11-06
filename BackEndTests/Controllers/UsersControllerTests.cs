@@ -58,10 +58,10 @@ namespace BackEndTests.Controllers
             // Arrange
             var controller = new UsersController(_userService);
             // Act
-            var result = await controller.GetUser(id);
+            var result = (await controller.GetUser(id)).Result as OkObjectResult;
             var expectedUser = await _userService.GetUserByIdAsync(id);
             // Assert
-            var userDto = result.Value;
+            var userDto = (UserDTO)result.Value;
             Assert.IsNotNull(userDto);
 
             Assert.AreEqual(expectedUser.Name, userDto.Name);
@@ -104,9 +104,9 @@ namespace BackEndTests.Controllers
             // Arrange
             var controller = new UsersController(_userService);
             // Act
-            var result = await controller.GetUserByName(name);
+            var result = (await controller.GetUserByName(name)).Result as OkObjectResult;
             // Assert
-            var okResult = result.Value;
+            var okResult = (UserDTO)result.Value;
             Assert.IsNotNull(okResult);
             Assert.AreEqual(okResult.Name, okResult.Name);
         }

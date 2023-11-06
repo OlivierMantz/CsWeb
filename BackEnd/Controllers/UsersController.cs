@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BackEnd.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 // based on https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-7.0&tabs=visual-studio
 
@@ -60,7 +61,7 @@ namespace BackEnd.Controllers
             }
 
             var userDto = UserToDto(user);
-            return userDto;
+            return Ok(userDto);
         }
 
         // GET: api/Users/name/john
@@ -79,7 +80,7 @@ namespace BackEnd.Controllers
                 return NotFound();
             }
 
-            return UserToDto(user);
+            return Ok(UserToDto(user));
         }
 
 
@@ -100,8 +101,7 @@ namespace BackEnd.Controllers
                 Name = userDto.Name,
                 Email = userDto.Email,
                 Password = userDto.Password,
-                Role = "User",
-                IsBanned = false
+                Role = "User"
             };
 
             await _userService.PostUserAsync(user);
