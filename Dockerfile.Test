@@ -1,10 +1,20 @@
-# Dockerfile.Test for testing
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS test
-WORKDIR /src
-COPY ["BackEnd/BackEnd.csproj", "./BackEnd/"]
-COPY ["BackEndTests/BackEndTests.csproj", "./BackEndTests/"]
-RUN dotnet restore "./BackEnd/BackEnd.csproj"
-RUN dotnet restore "./BackEndTests/BackEndTests.csproj"
+# Use the official .NET SDK image from Microsoft
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy csproj and restore any dependencies (via NuGet)
+COPY ["BackEnd/BackEnd.csproj", "BackEnd/"]
+COPY ["BackEndTests/BackEndTests.csproj", "BackEndTests/"]
+RUN dotnet restore "BackEnd/BackEnd.csproj"
+RUN dotnet restore "BackEndTests/BackEndTests.csproj"
+
+# Copy the project files into the container
 COPY . .
-WORKDIR "/src/BackEndTests"
-ENTRYPOINT ["dotnet", "test", "--no-build", "-c", "Release", "--logger", "console;verbosity=detailed"]
+
+# Set the working directory to the test project
+WORKDIR /app/BackEndTests
+
+# Run the tests as part of the build process
+RUN dotnet test --no-restore -c Release --logger "console;verbosity=normal"
