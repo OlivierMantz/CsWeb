@@ -1,16 +1,14 @@
 name: Run Tests
 
 on:
-    push:
-        branches: [main, dev]
-        paths:
-            - "BackEndTests/**"
-            - "Dockerfile.Test"
+    workflow_run:
+        workflows: ["Build Docker Image"]
+        types:
+            - completed
 
 jobs:
     test:
         runs-on: ubuntu-latest
-        needs: build_docker
 
         steps:
             - name: Checkout
