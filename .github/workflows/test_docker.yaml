@@ -1,32 +1,62 @@
-name: Run Tests
+name: Direct Test Execution
 
 on:
-    workflow_run:
-        workflows: ["Build Docker Image"]
-        branches: [main, dev]
-        types:
-            - completed
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-            - name: Pull Docker Image for Testing
-              run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:build
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '7.0.x' # Specify the .NET version
 
-            - name: Run Tests
-              run: |
-                  docker run --name backend_test_container ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:build
-                  docker logs backend_test_container
-                  docker rm backend_test_container
+      - name: Restore Dependencies
+        run: dotnet restore "./BackEnd/BackEnd.csproj"
 
-            - name: Explicitly Run Tests
-              run: |
-                  docker run --name backend_test_container -d ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:test
-                  docker exec backend_test_container dotnet test /src/BackEndTests --no-build -c Release --logger "console;verbosity=normal"
-                  docker stop backend_test_container
-                  docker rm backend_test_container
+      - name: Restore Test Dependencies
+        run: dotnet restore "./BackEndTests/BackEndTests.csproj"
+
+      - name: Run Tests
+        run: dotnet test "./BackEndTests/BackEndTests.csproj" --no-restore -c Release --logger "console;verbosity=normal"
+
+# name: Run Tests
+
+# on:
+#     workflow_run:
+#         workflows: ["Build Docker Image"]
+#         branches: [main, dev]
+#         types:
+#             - completed
+
+# jobs:
+#     test:
+#         runs-on: ubuntu-latest
+
+#         steps:
+#             - name: Checkout
+#               uses: actions/checkout@v4
+
+#             - name: Pull Docker Image for Testing
+#               run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:build
+
+#             - name: Run Tests
+#               run: |
+#                   docker run --name backend_test_container ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:build
+#                   docker logs backend_test_container
+#                   docker rm backend_test_container
+
+#             - name: Explicitly Run Tests
+#               run: |
+#                   docker run --name backend_test_container -d ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:test
+#                   docker exec backend_test_container dotnet test /src/BackEndTests --no-build -c Release --logger "console;verbosity=normal"
+#                   docker stop backend_test_container
+#                   docker rm backend_test_container
