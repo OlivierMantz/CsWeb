@@ -1,0 +1,39 @@
+name: Build and Test
+
+on:
+    push:
+        branches: [main, dev]
+
+jobs:
+    build_and_test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+
+            - name: Setup .NET Core SDK
+              uses: actions/setup-dotnet@v2
+              with:
+                  dotnet-version: "7.0.x"
+
+            - name: Restore Dependencies
+              run: dotnet restore "./BackEnd/BackEnd.csproj"
+
+            - name: Restore Test Dependencies
+              run: dotnet restore "./BackEndTests/BackEndTests.csproj"
+
+            - name: Build
+              run: dotnet build --configuration Release --no-restore
+
+            - name: Test
+              run: dotnet test "./BackEndTests/BackEndTests.csproj" --no-restore --verbosity normal
+
+            - name: Build Docker Image for Production
+              if: success()
+              run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:build .
+
+            - name: Push to Docker Hub if Tests Pass
+              if: success()
+              run: |
+                  docker push ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:build
