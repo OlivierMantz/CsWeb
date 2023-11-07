@@ -1,0 +1,27 @@
+name: Run Tests
+
+on:
+    workflow_run:
+        workflows: ["Build Docker Image"]
+        branches: [main, dev]
+        types: [completed]
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Build Docker Image for Testing
+              uses: docker/build-push-action@v5
+              with:
+                  context: .
+                  file: ./Dockerfile.Test
+                  load: true
+
+            - name: Run Tests
+              run: |
+                  docker run --name backend_test_container user_microservice_tests
+                  docker rm backend_test_container
