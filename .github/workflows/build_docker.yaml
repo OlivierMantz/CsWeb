@@ -18,5 +18,5 @@ jobs:
               with:
                   context: .
                   file: ./Dockerfile
-                  load: true
+                  # load: true
                   tags: ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:build
