@@ -24,5 +24,5 @@ jobs:
 
             - name: Run Tests
               run: |
-                  docker run --name backend_test_container user_microservice_tests
+                  docker run --name backend_test_container ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:build
                   docker rm backend_test_container
