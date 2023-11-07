@@ -15,16 +15,11 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
 
-            - name: Build Docker Image for Testing
-              uses: docker/build-push-action@v5
-              with:
-                context: .
-                file: ./Dockerfile.Test
-                load: true
-                tags: ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice_tests:latest
+            - name: Pull Docker Image for Testing
+              run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:build
 
             - name: Run Tests
               run: |
-                  docker run --name backend_test_container ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:latest
+                  docker run --name backend_test_container ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:build
                   docker logs backend_test_container
                   docker rm backend_test_container

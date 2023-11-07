@@ -3,9 +3,9 @@ name: Deploy to Docker Hub
 on:
     workflow_run:
         workflows: ["Run Tests"]
+        branches: [main, dev]
         types:
             - completed
-        branches: [main, dev]
 
 jobs:
     deploy:
@@ -19,7 +19,7 @@ jobs:
               uses: docker/login-action@v3
               with:
                   username: ${{ secrets.DOCKERHUB_USERNAME }}
-                  password: ${{ secrets.DOCKERHUB_TOKEN }}
+                  password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
             - name: Pull Docker Image for Deployment
               run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:build
