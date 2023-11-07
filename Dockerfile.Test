@@ -7,4 +7,4 @@ RUN dotnet restore "./BackEnd/BackEnd.csproj"
 RUN dotnet restore "./BackEndTests/BackEndTests.csproj"
 COPY . .
 WORKDIR "/src/BackEndTests"
-ENTRYPOINT ["dotnet", "test", "--no-build", "-c", "Release", "--logger", "console;verbosity=normal"]
+ENTRYPOINT ["dotnet", "test", "--no-build", "-c", "Release", "--logger", "console;verbosity=detailed"]
