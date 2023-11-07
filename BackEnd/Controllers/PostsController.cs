@@ -23,7 +23,7 @@ namespace BackEnd.Controllers
         {
             _context = context;
             _userService = userService;
-    }
+        }
         private static bool CheckInputInvalid(PostDTO postDTO) => postDTO == null || string.IsNullOrWhiteSpace(postDTO.Title) ||
                 string.IsNullOrWhiteSpace(postDTO.Description) ||
                 postDTO.AuthorId == null;

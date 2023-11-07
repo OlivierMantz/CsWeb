@@ -24,7 +24,8 @@ namespace BackEndTests.Controllers
             userContext.Database.EnsureDeleted();
             userContext.Database.EnsureCreated();
 
-            _userService = new UserService(new UserRepository(userContext));        }
+            _userService = new UserService(new UserRepository(userContext));
+        }
 
         // GET
         [TestMethod()]
@@ -157,7 +158,7 @@ namespace BackEndTests.Controllers
         {
             // Arrange
             UserDTO userDtoDoesntExist = new UserDTO
-                { Id = 5, Name = "JohnDoe", Email = "JohnDoe@gmail.com", Password = "5678" };
+            { Id = 5, Name = "JohnDoe", Email = "JohnDoe@gmail.com", Password = "5678" };
             var controller = new UsersController(_userService);
             // Act
             var result = await controller.PutUser(id, userDtoDoesntExist);
