@@ -25,9 +25,9 @@ jobs:
               uses: docker/build-push-action@v5
               with:
                   context: .
-                  file: ./Dockerfile
+                  file: ./BackEnd/Dockerfile
                   load: true # This will load the built image into Docker's image cache.
-                  tags: ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+                  tags: ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:latest
 
             - name: Run Tests in the Docker Container
               run: |
