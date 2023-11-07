@@ -13,7 +13,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
 
-            - name: Build Docker Image for Production
+            - name: Build Docker Image for Testing
               uses: docker/build-push-action@v5
               with:
                   context: .

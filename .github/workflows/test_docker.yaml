@@ -22,6 +22,9 @@ jobs:
                   file: ./Dockerfile.Test
                   load: true
 
+            - name: Build Docker Image for Testing
+              run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:build
+
             - name: Run Tests
               run: |
                   docker run --name backend_test_container ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:build
