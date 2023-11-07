@@ -1,10 +1,11 @@
 name: Direct Test Execution
 
 on:
-  push:
-    branches: [main, dev]
-  pull_request:
-    branches: [main, dev]
+    workflow_run:
+        workflows: ["Build Docker Image"]
+        branches: [main, dev]
+        types:
+            - completed
 
 jobs:
   test:
