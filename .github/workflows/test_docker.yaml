@@ -20,9 +20,8 @@ jobs:
                   context: .
                   file: ./Dockerfile.Test
                   load: true
-                  tags: user_microservice_tests:latest
 
             - name: Run Tests
               run: |
-                  docker run --name backend_test_container user_microservice_tests:latest
+                  docker run --name backend_test_container user_microservice_tests
                   docker rm backend_test_container
