@@ -1,27 +1,27 @@
 name: Build Docker Image
 
 on:
-  push:
-    branches: [main, dev]
-    # paths:
-    #   - 'BackEnd/**'
-    #   - 'BackEndTests/**'
-    #   - 'Dockerfile'
-    #   - 'Dockerfile.Test'
-    #   - '.github/workflows/**'
+    push:
+        branches: [main, dev]
+        # paths:
+        #   - 'BackEnd/**'
+        #   - 'BackEndTests/**'
+        #   - 'Dockerfile'
+        #   - 'Dockerfile.Test'
+        #   - '.github/workflows/**'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
-      - name: Build Docker Image for Production
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          load: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:build
+            - name: Build Docker Image for Production
+              uses: docker/build-push-action@v5
+              with:
+                  context: .
+                  file: ./Dockerfile
+                  load: true
+                  tags: ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:build
