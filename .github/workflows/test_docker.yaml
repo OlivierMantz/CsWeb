@@ -14,8 +14,6 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-              with:
-                token: ${{secrets.PAT_TESTING}}
 
             - name: Build Docker Image for Testing
               uses: docker/build-push-action@v5
