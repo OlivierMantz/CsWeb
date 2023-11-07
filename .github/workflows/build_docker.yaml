@@ -22,4 +22,3 @@ jobs:
                   file: ./Dockerfile
                   load: true
                   tags: ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:build
-
