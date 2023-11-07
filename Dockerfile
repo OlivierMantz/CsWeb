@@ -4,6 +4,6 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-COPY ./publish/ ./
+COPY --from=publish /app/publish .
 
 ENTRYPOINT ["dotnet", "BackEnd.dll"]
