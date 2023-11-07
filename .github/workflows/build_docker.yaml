@@ -9,7 +9,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Checkout
+            - name: Checkout Repository
               uses: actions/checkout@v4
 
             - name: Login to Docker Hub
@@ -18,7 +18,7 @@ jobs:
                   username: ${{ secrets.DOCKERHUB_USERNAME }}
                   password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-            - name: Build and push Docker Image for Production
+            - name: Build Docker Image for Production
               uses: docker/build-push-action@v5
               with:
                   context: .
