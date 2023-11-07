@@ -5,7 +5,10 @@ on:
     branches: [main, dev]
     # paths:
     #   - 'BackEnd/**'
+    #   - 'BackEndTests/**'
     #   - 'Dockerfile'
+    #   - 'Dockerfile.Test'
+    #   - '.github/workflows/**'
 
 jobs:
   build:
