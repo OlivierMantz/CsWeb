@@ -21,25 +21,26 @@ jobs:
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
 
-            - name: Build the Docker images
+            - name: Build Docker Image
               uses: docker/build-push-action@v5
               with:
                   context: .
-                  file: ./BackEnd/Dockerfile
-                  load: true # This will load the built images into Docker's image cache.
-                  tags: user_microservice:build, user_microservice:latest
+                  file: ./Dockerfile
+                  load: true # This will load the built image into Docker's image cache.
+                  tags: ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:latest
 
             - name: Run Tests
               run: |
-                  docker run --name testcontainer user_microservice:build
+                  docker run --name testcontainer -d ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:latest /bin/sh -c "while sleep 1000; do :; done"
+                  docker exec testcontainer dotnet test /src/BackEndTests --no-build -c Release --logger "console;verbosity=normal"
+                  docker stop testcontainer
                   docker rm testcontainer
 
-            - name: Push the Docker image
+            - name: Push to Docker Hub
               if: success() # Only push if the tests pass
               uses: docker/build-push-action@v5
               with:
                   context: .
-                  file: ./BackEnd/Dockerfile
+                  file: ./Dockerfile
                   push: true
                   tags: ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:latest
-                  target: final
