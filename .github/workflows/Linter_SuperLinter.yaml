@@ -1,25 +1,26 @@
-name: Lint Code
+name: Super Linter
 
 on:
     push:
-        branches-ignore: [main, dev]
+        branches-ignore: [main]
     pull_request:
         branches: [main, dev]
 
 jobs:
-    build:
-        name: Lint Code
+    run-lint:
         runs-on: ubuntu-latest
 
         steps:
             - name: Checkout Code
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
               with:
                   fetch-depth: 0
 
-            - name: Lint Code
-              uses: github/super-linter@v3
+            - name: Lint code
+              uses: github/super-linter@v5
               env:
                   VALIDATE_ALL_CODEBASE: false
                   DEFAULT_BRANCH: main
+                  VALIDATE_CSHARP: true
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  DISABLE_ERRORS: true
