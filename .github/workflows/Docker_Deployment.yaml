@@ -1,11 +1,11 @@
-name: Docker deployment and testing
+name: Docker build, test, and deploy
 
 on:
     push:
         branches: [main, dev]
 
 jobs:
-    build:
+    build-and-test:
         runs-on: ubuntu-latest
 
         steps:
@@ -25,19 +25,22 @@ jobs:
               uses: docker/build-push-action@v5
               with:
                   context: .
-                  file: ./BackEnd/Dockerfile
-                  load: true # Necessary to load the built image into Docker's image cache for the test step.
-                  tags: ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:latest
+                  file: ./Dockerfile
+                  load: true # This will load the built image into Docker's image cache.
+                  tags: ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
 
-            - name: Run Tests
+            - name: Run Tests in the Docker Container
               run: |
-                  docker run --rm ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:latest dotnet test
+                  docker run --name backend_test_container -d ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:latest
+                  docker exec backend_test_container dotnet test /app/BackEndTests
+                  docker stop backend_test_container
+                  docker rm backend_test_container
 
             - name: Push to Docker Hub
-              if: success() # This ensures the push only happens if the tests pass
+              if: success() # Only push if the tests pass
               uses: docker/build-push-action@v5
               with:
                   context: .
-                  file: ./BackEnd/Dockerfile
+                  file: ./Dockerfile
                   push: true
                   tags: ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:latest
