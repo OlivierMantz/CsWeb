@@ -1,0 +1,10 @@
+# Dockerfile.Test for testing
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS test
+WORKDIR /src
+COPY ["BackEnd/BackEnd.csproj", "./BackEnd/"]
+COPY ["BackEndTests/BackEndTests.csproj", "./BackEndTests/"]
+RUN dotnet restore "./BackEnd/BackEnd.csproj"
+RUN dotnet restore "./BackEndTests/BackEndTests.csproj"
+COPY . .
+WORKDIR "/src/BackEndTests"
+ENTRYPOINT ["dotnet", "test", "--no-build", "-c", "Release", "--logger", "console;verbosity=normal"]
