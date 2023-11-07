@@ -25,6 +25,3 @@ jobs:
                   file: ./Dockerfile
                   push: true
                   tags: ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:build
-
-            - name: Inspect the Docker Image
-              run: docker inspect ${{ secrets.DOCKERHUB_USERNAME }}/user_microservice:test
