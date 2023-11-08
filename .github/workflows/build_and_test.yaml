@@ -26,7 +26,6 @@ jobs:
 
     build:
         runs-on: ubuntu-latest
-        needs: run_linter
         steps:
             - name: Checkout Repository
               uses: actions/checkout@v4
