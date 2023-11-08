@@ -44,6 +44,14 @@ jobs:
             - name: Build
               run: dotnet build --configuration Release --no-restore
 
+            - name: Publish Build Artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                  name: built-app
+                  path: |
+                      BackEnd/bin/Release/net7.0/
+                      BackEndTests/bin/Release/net7.0/
+
     test:
         needs: build
         runs-on: ubuntu-latest
@@ -56,8 +64,14 @@ jobs:
               with:
                   dotnet-version: "7.0.x"
 
+            - name: Download Build Artifacts
+              uses: actions/download-artifact@v3
+              with:
+                  name: built-app
+                  path: .
             - name: Test
-              run: dotnet test "./BackEndTests/BackEndTests.csproj" --no-build --verbosity normal
+              run: |
+                  dotnet test "./BackEndTests/bin/Release/net7.0/BackEndTests.dll" --no-build --verbosity normal
 
     publish_to_dockerhub:
         needs: [test]
