@@ -43,7 +43,7 @@ namespace BackEndTests.Controllers
             var userDtos = okResult.Value as List<UserDTO>;
             Assert.IsNotNull(userDtos);
 
-            Assert.AreNotEqual(expectedUsers.Count(), userDtos.Count);
+            Assert.AreEqual(expectedUsers.Count(), userDtos.Count);
             Assert.AreEqual(expectedUsers[0].Name, userDtos[0].Name);
             Assert.AreEqual(expectedUsers[1].Name, userDtos[1].Name);
             Assert.AreEqual(expectedUsers[2].Name, userDtos[2].Name);
