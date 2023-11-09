@@ -1,2 +1,2 @@
 # CsWeb
-[![Lint Code, Build, Test and Publish](https://github.com/OlivierMantz/CsWeb/actions/workflows/build_and_test.yaml/badge.svg)](https://github.com/OlivierMantz/CsWeb/actions/workflows/build_and_test.yaml)
+[![Lint Code, Build, Test and Publish](https://github.com/OlivierMantz/CsWeb/actions/workflows/build_and_test.yaml/badge.svg?event=push)](https://github.com/OlivierMantz/CsWeb/actions/workflows/build_and_test.yaml)
