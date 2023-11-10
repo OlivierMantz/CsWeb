@@ -29,7 +29,7 @@ namespace BackEndTests.Controllers
 
         // GET
         [TestMethod()]
-        public async Task GetUsers_Success_ReturnsListOfUsers()
+        public async Task Get_AllUsers()
         {
             // Arrange
             var controller = new UsersController(_userService);
@@ -54,7 +54,7 @@ namespace BackEndTests.Controllers
         [DataRow(1)]
         [DataRow(2)]
         [DataRow(3)]
-        public async Task GetUser_Success_ReturnSingleUser(long id)
+        public async Task Get_OneUser(long id)
         {
             // Arrange
             var controller = new UsersController(_userService);
@@ -73,7 +73,7 @@ namespace BackEndTests.Controllers
 
         [TestMethod]
         [DataRow(-1)]
-        public async Task GetUser_Fail_ReturnSingleUser_InvalidInput(long id)
+        public async Task Get_OneUser_InvalidInputId(long id)
         {
             // Arrange
             var controller = new UsersController(_userService);
@@ -88,7 +88,7 @@ namespace BackEndTests.Controllers
 
         [TestMethod]
         [DataRow(4)]
-        public async Task GetUser_Fail_ReturnSingleUser_UserNotFound(long id)
+        public async Task Get_OneUser_UserNotFound(long id)
         {
             // Arrange
             var controller = new UsersController(_userService);
@@ -100,7 +100,7 @@ namespace BackEndTests.Controllers
         // GET {name}
         [TestMethod()]
         [DataRow("John")]
-        public async Task GetUserByNameTest_Fail_ValidStringAsync(string name)
+        public async Task Get_UserByName(string name)
         {
             // Arrange
             var controller = new UsersController(_userService);
@@ -114,7 +114,7 @@ namespace BackEndTests.Controllers
 
         [TestMethod]
         [DataRow("")]
-        public async Task GetUserByName_Fail_InvalidName_ReturnsBadRequest(string name)
+        public async Task Get_UserByName_InvalidInputName(string name)
         {
             // Arrange
             var controller = new UsersController(_userService);
@@ -129,7 +129,7 @@ namespace BackEndTests.Controllers
 
         [TestMethod]
         [DataRow("Blorg")]
-        public async Task GetUserByName_Fail_ReturnDoesNotExist(string name)
+        public async Task Get_UserByName_NotFound(string name)
         {
             // Arrange
             var controller = new UsersController(_userService);
@@ -141,7 +141,7 @@ namespace BackEndTests.Controllers
         // PUT {id}
         [TestMethod()]
         [DataRow(1)]
-        public async Task PutUserTest_Success(long id)
+        public async Task Put_User(long id)
         {
             UserDTO userDto = new UserDTO { Id = 1, Name = "JohnDoe", Email = "JohnDoe@gmail.com", Password = "5678" };
             // Arrange
@@ -153,8 +153,22 @@ namespace BackEndTests.Controllers
         }
 
         [TestMethod()]
+        [DataRow(4)]
+        [DataRow(null)]
+        public async Task Put_User_InvalidInputId(long id)
+        {
+            // Arrange
+            UserDTO userDto = new UserDTO { Id = 1, Name = "JohnDoe", Email = "JohnDoe@gmail.com", Password = "5678" };
+            var controller = new UsersController(_userService);
+            // Act
+            var result = await controller.PutUser(id, userDto);
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+        }
+
+        [TestMethod()]
         [DataRow(5)]
-        public async Task PutUser_Fail_InvalidId_ReturnsNotFound(long id)
+        public async Task Put_User_NotFound(long id)
         {
             // Arrange
             UserDTO userDtoDoesntExist = new UserDTO
@@ -166,23 +180,9 @@ namespace BackEndTests.Controllers
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
-        [TestMethod()]
-        [DataRow(4)]
-        [DataRow(null)]
-        public async Task PutUserTest_Fail_BadRequest(long id)
-        {
-            // Arrange
-            UserDTO userDto = new UserDTO { Id = 1, Name = "JohnDoe", Email = "JohnDoe@gmail.com", Password = "5678" };
-            var controller = new UsersController(_userService);
-            // Act
-            var result = await controller.PutUser(id, userDto);
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
-        }
-
         // POST
         [TestMethod]
-        public async Task PostUser_Success_ValidInput_ReturnsCreated()
+        public async Task Post_User()
         {
             // Arrange
             var controller = new UsersController(_userService);
@@ -203,13 +203,13 @@ namespace BackEndTests.Controllers
         }
 
         [TestMethod]
-        public async Task PostUser_Fail_InvalidInput_ReturnsProblem()
+        public async Task Post_User_InvalidInput()
         {
             // Arrange
             var invalidUserDto = new UserDTO
             {
                 Name = "John",
-                Email = null, // Invalid input: Email is null
+                Email = null,
                 Password = "1234"
             };
             var controller = new UsersController(_userService);
@@ -232,7 +232,7 @@ namespace BackEndTests.Controllers
         // DELETE {id}
         [TestMethod]
         [DataRow(1)]
-        public async Task DeleteUser_Success_ValidId_ReturnsNoContent(long id)
+        public async Task Delete_User(long id)
         {
             // Arrange
             var controller = new UsersController(_userService);
@@ -244,7 +244,7 @@ namespace BackEndTests.Controllers
 
         [TestMethod]
         [DataRow(4)]
-        public async Task DeleteUser_Fail_InvalidId_ReturnsNotFound(long id)
+        public async Task Delete_User_InvalidInputId(long id)
         {
             // Arrange
             var controller = new UsersController(_userService);
@@ -256,7 +256,7 @@ namespace BackEndTests.Controllers
 
         [TestMethod]
         [DataRow(1)]
-        public async Task DeleteUser_Fail_ValidId_RemovesUserFromDatabase(long id)
+        public async Task Delete_User_NotFound(long id)
         {
             // Arrange
             var controller = new UsersController(_userService);
