@@ -90,6 +90,6 @@ jobs:
               uses: docker/build-push-action@v5
               with:
                   context: .
-                  file: ./Dockerfile
+                  file: ./BackEnd/Dockerfile
                   push: true
                   tags: ${{ secrets.DOCKERHUB_USERNAME }}/user_api:latest
