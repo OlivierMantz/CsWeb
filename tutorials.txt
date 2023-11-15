@@ -1,3 +1,9 @@
 https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-7.0&tabs=visual-studio
 
 https://www.youtube.com/watch?v=DgVjEo3OGBI
+
+Setting up Kubernetes:
+https://medium.com/@TheLe0/running-a-net-application-on-a-local-kubernetes-cluster-1aff3537f755
+
+
+Ingress controller:

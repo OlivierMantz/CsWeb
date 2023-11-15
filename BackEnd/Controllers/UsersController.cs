@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BackEnd.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
+using PostAPI.Utilities;
 
 // based on https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-7.0&tabs=visual-studio
 
@@ -36,6 +37,7 @@ namespace BackEnd.Controllers
             };
             return userDto;
         }
+
         [HttpGet]
         public async Task<ActionResult<List<UserDTO>>> GetUsers()
         {
@@ -83,7 +85,6 @@ namespace BackEnd.Controllers
             return Ok(UserToDto(user));
         }
 
-
         // TODO Patch
 
         // POST: api/Users
@@ -91,7 +92,7 @@ namespace BackEnd.Controllers
         [HttpPost]
         public async Task<ActionResult<UserDTO>> PostUser(UserDTO userDto)
         {
-            if (CheckInputInvalid(userDto))
+            if (Validator.CheckInputInvalid(userDto))
             {
                 return Problem("One or more invalid inputs");
             }
@@ -148,72 +149,6 @@ namespace BackEnd.Controllers
             await _userService.DeleteUserAsync(id);
 
             return NoContent();
-        }
-
-        // Checking email https://learn.microsoft.com/en-us/dotnet/standard/base-types/how-to-verify-that-strings-are-in-valid-email-format
-        private static bool CheckInputInvalid(UserDTO userDto)
-        {
-            var valid = IsValidEmail(userDto.Email);
-
-            if (!IsValidEmail(userDto.Email))
-            {
-                return true;
-            }
-
-            if (
-                userDto == null &&
-                string.IsNullOrWhiteSpace(userDto?.Name) &&
-                (!IsValidEmail(userDto.Email)) &&
-                string.IsNullOrWhiteSpace(userDto?.Password)
-            )
-            {
-                return true;
-            }
-            else return false;
-        }
-
-        private static bool IsValidEmail(string email)
-        {
-            if (string.IsNullOrWhiteSpace(email))
-                return false;
-
-            try
-            {
-                // Normalize the domain
-                email = Regex.Replace(email, @"(@)(.+)$", DomainMapper,
-                    RegexOptions.None, TimeSpan.FromMilliseconds(200));
-
-                // Examines the domain part of the email and normalizes it.
-                string DomainMapper(Match match)
-                {
-                    // Use IdnMapping class to convert Unicode domain names.
-                    var idn = new IdnMapping();
-
-                    // Pull out and process domain name (throws ArgumentException on invalid)
-                    string domainName = idn.GetAscii(match.Groups[2].Value);
-
-                    return match.Groups[1].Value + domainName;
-                }
-            }
-            catch (RegexMatchTimeoutException e)
-            {
-                return false;
-            }
-            catch (ArgumentException e)
-            {
-                return false;
-            }
-
-            try
-            {
-                return Regex.IsMatch(email,
-                    @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
-                    RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
-            }
-            catch (RegexMatchTimeoutException)
-            {
-                return false;
-            }
         }
     }
 }
