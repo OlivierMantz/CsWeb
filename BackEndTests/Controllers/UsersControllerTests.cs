@@ -27,7 +27,7 @@ namespace BackEndTests.Controllers
         }
 
         // GET
-        [Fact()]
+        [Fact]
         public async Task Get_AllUsers()
         {
             // Arrange
@@ -97,7 +97,7 @@ namespace BackEndTests.Controllers
         }
 
         // GET {name}
-        [Theory()]
+        [Theory]
         [InlineData("John")]
         public async Task Get_UserByName(string name)
         {
@@ -138,7 +138,7 @@ namespace BackEndTests.Controllers
         }
 
         // PUT {id}
-        [Theory()]
+        [Theory]
         [InlineData(1)]
         public async Task Put_User(long id)
         {
@@ -151,7 +151,7 @@ namespace BackEndTests.Controllers
             Assert.IsType<NoContentResult>(result);
         }
 
-        [Theory()]
+        [Theory]
         [InlineData(4)]
         [InlineData(null)]
         public async Task Put_User_InvalidInputId(long id)
@@ -165,7 +165,7 @@ namespace BackEndTests.Controllers
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
-        [Theory()]
+        [Theory]
         [InlineData(5)]
         public async Task Put_User_NotFound(long id)
         {
@@ -180,7 +180,7 @@ namespace BackEndTests.Controllers
         }
 
         // POST
-        [Fact()]
+        [Fact]
         public async Task Post_User()
         {
             // Arrange
@@ -201,7 +201,7 @@ namespace BackEndTests.Controllers
             Assert.Equal(newUserDto.Name, (createdResult.Value as UserDTO)?.Name);
         }
 
-        [Fact()]
+        [Fact]
         public async Task Post_User_InvalidInput()
         {
             // Arrange
