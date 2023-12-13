@@ -118,3 +118,7 @@ fabric.properties
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/rider,visualstudiocode
+/bin/Debug
+/obj/Debug
+/obj/Docker/backend
+/obj/Docker
