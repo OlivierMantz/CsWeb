@@ -7,7 +7,8 @@
 /BackEndTests/v17
 /TestResults/
 /vs/
-
+appsettings.json 
+appsettings.Development.json
 # Created by https://www.toptal.com/developers/gitignore/api/rider,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=rider,visualstudiocode
 
@@ -122,3 +123,4 @@ fabric.properties
 /obj/Debug
 /obj/Docker/backend
 /obj/Docker
+.env

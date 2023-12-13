@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using BackEnd.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using PostAPI.Utilities;
+using Microsoft.AspNetCore.Authorization;
 
 // based on https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-7.0&tabs=visual-studio
 
@@ -38,6 +39,7 @@ namespace BackEnd.Controllers
             return userDto;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<UserDTO>>> GetUsers()
         {
@@ -67,6 +69,7 @@ namespace BackEnd.Controllers
         }
 
         // GET: api/Users/name/john
+        [Authorize]
         [HttpGet("name/{name}")]
         public async Task<ActionResult<UserDTO>> GetUserByName(string name)
         {
@@ -85,33 +88,34 @@ namespace BackEnd.Controllers
             return Ok(UserToDto(user));
         }
 
-        // TODO Patch
+        //// TODO Patch
 
-        // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<UserDTO>> PostUser(UserDTO userDto)
-        {
-            if (Validator.CheckInputInvalid(userDto))
-            {
-                return Problem("One or more invalid inputs");
-            }
+        //// POST: api/Users
+        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPost]
+        //public async Task<ActionResult<UserDTO>> PostUser(UserDTO userDto)
+        //{
+        //    if (Validator.CheckInputInvalid(userDto))
+        //    {
+        //        return Problem("One or more invalid inputs");
+        //    }
 
-            var user = new User
-            {
-                Name = userDto.Name,
-                Email = userDto.Email,
-                Password = userDto.Password,
-                Role = "User"
-            };
+        //    var user = new User
+        //    {
+        //        Name = userDto.Name,
+        //        Email = userDto.Email,
+        //        Password = userDto.Password,
+        //        Role = "User"
+        //    };
 
-            await _userService.PostUserAsync(user);
+        //    await _userService.PostUserAsync(user);
 
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, UserToDto(user));
-        }
+        //    return CreatedAtAction(nameof(GetUser), new { id = user.Id }, UserToDto(user));
+        //}
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(long id, UserDTO userDto)
         {
@@ -137,6 +141,7 @@ namespace BackEnd.Controllers
         }
 
         // DELETE: api/Users/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(long id)
         {

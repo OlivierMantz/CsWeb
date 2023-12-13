@@ -179,54 +179,54 @@ namespace BackEndTests.Controllers
             Assert.IsType<NotFoundResult>(result);
         }
 
-        // POST
-        [Fact]
-        public async Task Post_User()
-        {
-            // Arrange
-            var controller = new UsersController(_userService);
-            var newUserDto = new UserDTO
-            {
-                Name = "JohnDoe",
-                Email = "johndoe@gmail.com",
-                Password = "password",
-            };
-            // Act
-            var result = await controller.PostUser(newUserDto);
-            // Assert
-            Assert.IsType<CreatedAtActionResult>(result.Result);
-            var createdResult = result.Result as CreatedAtActionResult;
-            Assert.Equal(201, createdResult.StatusCode);
-            Assert.Equal(nameof(UsersController.GetUser), createdResult.ActionName);
-            Assert.Equal(newUserDto.Name, (createdResult.Value as UserDTO)?.Name);
-        }
+        //// POST
+        //[Fact]
+        //public async Task Post_User()
+        //{
+        //    // Arrange
+        //    var controller = new UsersController(_userService);
+        //    var newUserDto = new UserDTO
+        //    {
+        //        Name = "JohnDoe",
+        //        Email = "johndoe@gmail.com",
+        //        Password = "password",
+        //    };
+        //    // Act
+        //    var result = await controller.PostUser(newUserDto);
+        //    // Assert
+        //    Assert.IsType<CreatedAtActionResult>(result.Result);
+        //    var createdResult = result.Result as CreatedAtActionResult;
+        //    Assert.Equal(201, createdResult.StatusCode);
+        //    Assert.Equal(nameof(UsersController.GetUser), createdResult.ActionName);
+        //    Assert.Equal(newUserDto.Name, (createdResult.Value as UserDTO)?.Name);
+        //}
 
-        [Fact]
-        public async Task Post_User_InvalidInput()
-        {
-            // Arrange
-            var invalidUserDto = new UserDTO
-            {
-                Name = "John",
-                Email = null,
-                Password = "1234"
-            };
-            var controller = new UsersController(_userService);
-            // Act
-            var result = await controller.PostUser(invalidUserDto);
-            // Assert
-            Assert.IsType<ObjectResult>(result.Result);
-            // var objectResult = (ObjectResult)result.Result;
-            // Assert.Equal(500, objectResult.StatusCode);
-            // Assert.IsInstanceOfType(objectResult.Value, typeof(ProblemDetails));
-            // var problemDetails = (ProblemDetails)objectResult.Value;
-            // Assert.Equal("One or more invalid inputs", problemDetails.Detail);
-            var objectResult = result.Result as ObjectResult;
-            Assert.Equal(500, objectResult.StatusCode);
-            Assert.IsType<ProblemDetails>(objectResult.Value);
-            var problemDetails = objectResult.Value as ProblemDetails;
-            Assert.Equal("One or more invalid inputs", problemDetails?.Detail);
-        }
+        //[Fact]
+        //public async Task Post_User_InvalidInput()
+        //{
+        //    // Arrange
+        //    var invalidUserDto = new UserDTO
+        //    {
+        //        Name = "John",
+        //        Email = null,
+        //        Password = "1234"
+        //    };
+        //    var controller = new UsersController(_userService);
+        //    // Act
+        //    var result = await controller.PostUser(invalidUserDto);
+        //    // Assert
+        //    Assert.IsType<ObjectResult>(result.Result);
+        //    // var objectResult = (ObjectResult)result.Result;
+        //    // Assert.Equal(500, objectResult.StatusCode);
+        //    // Assert.IsInstanceOfType(objectResult.Value, typeof(ProblemDetails));
+        //    // var problemDetails = (ProblemDetails)objectResult.Value;
+        //    // Assert.Equal("One or more invalid inputs", problemDetails.Detail);
+        //    var objectResult = result.Result as ObjectResult;
+        //    Assert.Equal(500, objectResult.StatusCode);
+        //    Assert.IsType<ProblemDetails>(objectResult.Value);
+        //    var problemDetails = objectResult.Value as ProblemDetails;
+        //    Assert.Equal("One or more invalid inputs", problemDetails?.Detail);
+        //}
 
         // DELETE {id}
         [Theory]

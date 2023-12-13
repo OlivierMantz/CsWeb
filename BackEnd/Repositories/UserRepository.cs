@@ -10,6 +10,24 @@ namespace BackEnd.Repositories
 {
     public class UserRepository : IUserRepository
     {
+        private static List<User> _users = new()
+        {
+            new ()
+            {
+                Id = 1, Name = "John", Email = "John@gmail.com", Password = "1234", Role = "User"
+            },
+            new ()
+            {
+                Id = 2, Name = "Jane", Email = "Jane@gmail.com", Password = "1234", Role = "User"
+            },
+            new ()
+            {
+                Id = 3, Name = "Bob", Email = "Bob@gmail.com", Password = "1234", Role = "User"
+            }
+        };
+
+        public List<User> GetUsers() => _users;
+
         private readonly UserContext _userContext;
 
         public UserRepository(UserContext userContext)
