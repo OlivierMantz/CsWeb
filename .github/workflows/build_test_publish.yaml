@@ -107,10 +107,10 @@ jobs:
         # Add a step to update the Kubernetes deployment image
         - name: Update Deployment Image
           run: |
-            kubectl set image deployment/user-api user-api=${{ secrets.DOCKERHUB_USERNAME }}/user_api:latest -n ingress-nginx
+            kubectl set image deployment/user-api user-api=${{ secrets.DOCKERHUB_USERNAME }}/user_api:latest
     
         # Restart the deployment to ensure the update takes effect
         - name: Restart Deployment
           run: |
-            kubectl rollout restart deployment/user-api -n ingress-nginx
+            kubectl rollout restart deployment/user-api -n ingress-basic
                
