@@ -93,3 +93,16 @@ jobs:
                   file: ./BackEnd/Dockerfile
                   push: true
                   tags: ${{ secrets.DOCKERHUB_USERNAME }}/user_api:latest
+    
+    auto-deploy:
+        needs: publish_to_dockerhub
+        runs-on: ubuntu-latest
+        steps:
+        # Set the target AKS cluster.
+        - uses: Azure/aks-set-context@v1
+          with:
+            creds: '${{ secrets.AZURE_CREDENTIALS }}'
+            cluster-name: Cluster
+            resource-group: WebApp
+        - name: Restart client
+          run: kubectl rollout restart deployment user-api                  
