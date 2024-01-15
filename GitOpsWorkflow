@@ -1,0 +1,19 @@
+name: Deploy to AKS Cluster
+on:
+  workflow_run:
+    workflows: ["Docker Image CI master"]
+    types:
+      - completed
+ 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    # Set the target AKS cluster.
+    - uses: Azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: sheper
+        resource-group: sheper
+    - name: Restart client
+      run: kubectl rollout restart deployment client
