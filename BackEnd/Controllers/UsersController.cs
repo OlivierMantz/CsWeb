@@ -54,7 +54,7 @@ namespace BackEnd.Controllers
 
             if (currentUserId == userId || User.IsInRole("Administrator"))
             {
-                //await _auth0ManagementService.DeleteUserAsync(userId);
+                await _auth0ManagementService.DeleteUserAsync(userId);
                 return Ok("User deleted succesfully");
             }
             else

@@ -42,7 +42,7 @@ public class Program
                     {
                         options.AddPolicy("AllowSpecificOrigin", builder =>
                         {
-                            builder.WithOrigins("http://localhost:5173")
+                            builder.WithOrigins("http://localhost:5173", "http://localhost:5241")
                                    .AllowAnyHeader()
                                    .AllowAnyMethod();
                         });
