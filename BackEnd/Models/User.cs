@@ -5,7 +5,7 @@ namespace BackEnd.Models
     public class User
     {
         [Key]
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         public string Name { get; set; }

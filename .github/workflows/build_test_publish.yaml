@@ -92,4 +92,4 @@ jobs:
                   context: .
                   file: ./BackEnd/Dockerfile
                   push: true
-                  tags: ${{ secrets.DOCKERHUB_USERNAME }}/user_api:latest
+                  tags: ${{ secrets.DOCKERHUB_USERNAME }}/user_api:newapi

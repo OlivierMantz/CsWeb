@@ -26,7 +26,7 @@ public static class PrepDb
             context.User.AddRange(
                 new User()
                 {
-                    Id = 1,
+                    Id = "1",
                     Name = "John",
                     Email = "John@gmail.com",
                     Password = "1234",
@@ -34,7 +34,7 @@ public static class PrepDb
                 },
                 new User()
                 {
-                    Id = 2,
+                    Id = "2",
                     Name = "Jane",
                     Email = "Jane@gmail.com",
                     Password = "1234",
@@ -42,7 +42,7 @@ public static class PrepDb
                 },
                 new User()
                 {
-                    Id = 3,
+                    Id = "3",
                     Name = "Bob",
                     Email = "Bob@gmail.com",
                     Password = "1234",
